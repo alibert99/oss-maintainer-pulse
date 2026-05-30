@@ -69,14 +69,6 @@ Maintainer Pulse groups work into five queues:
 - `quick_wins`: small contributor-friendly issues labeled `good first issue`,
   `help wanted`, `documentation`, or `starter`.
 
-## Honest Program Note
-
-OpenAI's Codex for Open Source program is for selected primary or core maintainers
-of active open-source projects with meaningful usage or ecosystem importance.
-Maintainer Pulse can help produce real maintenance evidence, but a new repository
-does not automatically qualify for any credit or subscription offer. Use only
-accurate repository statistics in applications.
-
 ## Project Status
 
 This project is alpha. The CLI and report fields may change as maintainers test it

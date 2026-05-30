@@ -14,6 +14,7 @@ token, or fetch live issue and pull request data from the GitHub API.
 [![CI](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/ci.yml/badge.svg)](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/ci.yml)
 [![Package](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/package.yml/badge.svg)](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/package.yml)
 [![Maintainer Pulse](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/maintainer-pulse.yml/badge.svg)](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/maintainer-pulse.yml)
+[![PyPI](https://img.shields.io/pypi/v/oss-maintainer-pulse.svg)](https://pypi.org/project/oss-maintainer-pulse/)
 
 ![Maintainer Pulse terminal preview](https://raw.githubusercontent.com/alibert99/oss-maintainer-pulse/main/assets/terminal-preview.svg)
 
@@ -27,6 +28,12 @@ token, or fetch live issue and pull request data from the GitHub API.
 - GitHub Actions CI and fixture-based tests.
 
 ## Install
+
+From PyPI:
+
+```bash
+python -m pip install oss-maintainer-pulse
+```
 
 From GitHub:
 

@@ -27,6 +27,12 @@ classifiers = [
 ]
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/alibert99/oss-maintainer-pulse"
+Repository = "https://github.com/alibert99/oss-maintainer-pulse"
+Issues = "https://github.com/alibert99/oss-maintainer-pulse/issues"
+Documentation = "https://github.com/alibert99/oss-maintainer-pulse#readme"
+
 [project.optional-dependencies]
 dev = [
   "pytest>=8",

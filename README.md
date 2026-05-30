@@ -11,10 +11,14 @@ maintenance report. It is built for open-source maintainers who need to answer:
 The tool is offline-first. You can run it against exported GitHub JSON without a
 token, or fetch live issue and pull request data from the GitHub API.
 
+[![CI](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/ci.yml/badge.svg)](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/ci.yml)
+[![Maintainer Pulse](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/maintainer-pulse.yml/badge.svg)](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/maintainer-pulse.yml)
+
 ## Features
 
 - Release blocker, stuck pull request, stale item, first-response, and quick-win queues.
 - Markdown, HTML, and JSON output.
+- Reusable GitHub Action for scheduled reports.
 - No runtime dependencies.
 - Deterministic scoring that can be reviewed and changed by maintainers.
 - GitHub Actions CI and fixture-based tests.
@@ -56,6 +60,42 @@ Generate machine-readable output:
 ```bash
 maintainer-pulse octo-org/octo-repo --format json
 ```
+
+See [examples/sample-report.md](examples/sample-report.md) for a generated report.
+
+## GitHub Action
+
+Run Maintainer Pulse weekly and upload a report artifact:
+
+```yaml
+name: Maintainer Pulse
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 9 * * 1"
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: alibert99/oss-maintainer-pulse@v0.1.0
+        id: pulse
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          output: maintainer-pulse-report.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: maintainer-pulse-report
+          path: ${{ steps.pulse.outputs.report-path }}
+```
+
+See [docs/github-action.md](docs/github-action.md) for all inputs.
 
 ## Output Queues
 

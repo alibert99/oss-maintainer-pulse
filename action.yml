@@ -1,0 +1,99 @@
+name: Maintainer Pulse
+description: Generate issue and pull request health reports for open-source maintainers.
+author: alibert99
+
+branding:
+  icon: activity
+  color: green
+
+inputs:
+  repository:
+    description: Repository to analyze as owner/name. Defaults to the workflow repository.
+    required: false
+    default: ""
+  github-token:
+    description: GitHub token used for API requests. Use secrets.GITHUB_TOKEN for normal workflows.
+    required: false
+    default: ""
+  input-json:
+    description: Optional path to exported GitHub issues JSON. When set, no GitHub API request is made.
+    required: false
+    default: ""
+  format:
+    description: Report format.
+    required: false
+    default: markdown
+  output:
+    description: Path where the generated report should be written.
+    required: false
+    default: maintainer-pulse-report.md
+  stale-days:
+    description: Number of idle days before an open item is considered stale.
+    required: false
+    default: "30"
+  max-pages:
+    description: Maximum GitHub API pages to fetch when reading live data.
+    required: false
+    default: "2"
+  python-version:
+    description: Python version used to run Maintainer Pulse.
+    required: false
+    default: "3.12"
+  summary:
+    description: Append Markdown reports to the GitHub Actions job summary.
+    required: false
+    default: "true"
+
+outputs:
+  report-path:
+    description: Path to the generated report.
+    value: ${{ steps.report.outputs.report-path }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install Maintainer Pulse
+      shell: bash
+      run: python -m pip install "$GITHUB_ACTION_PATH"
+      env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
+
+    - name: Generate report
+      id: report
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        repository="${INPUT_REPOSITORY:-$GITHUB_REPOSITORY}"
+        args=(
+          "$repository"
+          "--format" "$INPUT_FORMAT"
+          "--output" "$INPUT_OUTPUT"
+          "--stale-days" "$INPUT_STALE_DAYS"
+          "--max-pages" "$INPUT_MAX_PAGES"
+        )
+
+        if [ -n "$INPUT_JSON" ]; then
+          args+=("--input" "$INPUT_JSON")
+        fi
+
+        maintainer-pulse "${args[@]}"
+        echo "report-path=$INPUT_OUTPUT" >> "$GITHUB_OUTPUT"
+
+        if [ "$INPUT_SUMMARY" = "true" ] && [ "$INPUT_FORMAT" = "markdown" ] && [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
+          cat "$INPUT_OUTPUT" >> "$GITHUB_STEP_SUMMARY"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        INPUT_REPOSITORY: ${{ inputs.repository }}
+        INPUT_JSON: ${{ inputs.input-json }}
+        INPUT_FORMAT: ${{ inputs.format }}
+        INPUT_OUTPUT: ${{ inputs.output }}
+        INPUT_STALE_DAYS: ${{ inputs.stale-days }}
+        INPUT_MAX_PAGES: ${{ inputs.max-pages }}
+        INPUT_SUMMARY: ${{ inputs.summary }}
+

@@ -81,6 +81,7 @@ def main(argv: list[str] | None = None) -> int:
         pulse = analyze(items, repository, stale_days=args.stale_days)
         rendered = _render(args.format, pulse)
         if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(rendered, encoding="utf-8")
         else:
             sys.stdout.write(rendered)
@@ -101,4 +102,3 @@ def _render(format_name: str, pulse):
     if format_name == "json":
         return render_json(pulse)
     raise ValueError(f"Unsupported format: {format_name}")
-

@@ -23,7 +23,7 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-      - uses: alibert99/oss-maintainer-pulse@v0.1.1
+      - uses: alibert99/oss-maintainer-pulse@v0.1.2
         id: pulse
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

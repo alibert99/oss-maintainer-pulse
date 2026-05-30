@@ -12,7 +12,10 @@ The tool is offline-first. You can run it against exported GitHub JSON without a
 token, or fetch live issue and pull request data from the GitHub API.
 
 [![CI](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/ci.yml/badge.svg)](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/ci.yml)
+[![Package](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/package.yml/badge.svg)](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/package.yml)
 [![Maintainer Pulse](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/maintainer-pulse.yml/badge.svg)](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/maintainer-pulse.yml)
+
+![Maintainer Pulse terminal preview](https://raw.githubusercontent.com/alibert99/oss-maintainer-pulse/main/assets/terminal-preview.svg)
 
 ## Features
 
@@ -24,6 +27,14 @@ token, or fetch live issue and pull request data from the GitHub API.
 - GitHub Actions CI and fixture-based tests.
 
 ## Install
+
+From GitHub:
+
+```bash
+python -m pip install git+https://github.com/alibert99/oss-maintainer-pulse.git
+```
+
+From a local checkout:
 
 ```bash
 python -m pip install .
@@ -84,7 +95,7 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-      - uses: alibert99/oss-maintainer-pulse@v0.1.1
+      - uses: alibert99/oss-maintainer-pulse@v0.1.2
         id: pulse
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -96,6 +107,11 @@ jobs:
 ```
 
 See [docs/github-action.md](docs/github-action.md) for all inputs.
+
+## Distribution
+
+- GitHub Action listing draft: [docs/marketplace-listing.md](docs/marketplace-listing.md)
+- PyPI publishing guide: [docs/pypi-publishing.md](docs/pypi-publishing.md)
 
 ## Output Queues
 

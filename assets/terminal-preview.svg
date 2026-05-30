@@ -1,0 +1,37 @@
+<svg width="1200" height="620" viewBox="0 0 1200 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Maintainer Pulse terminal report preview</title>
+  <desc id="desc">A terminal-style preview showing a maintainer health snapshot, recommended actions, and prioritized GitHub issue queues.</desc>
+  <rect width="1200" height="620" rx="24" fill="#0E141B"/>
+  <rect x="44" y="44" width="1112" height="532" rx="18" fill="#111B22" stroke="#293842" stroke-width="2"/>
+  <rect x="44" y="44" width="1112" height="56" rx="18" fill="#16242C"/>
+  <circle cx="82" cy="72" r="8" fill="#F05D5E"/>
+  <circle cx="110" cy="72" r="8" fill="#F2C14E"/>
+  <circle cx="138" cy="72" r="8" fill="#5EC27B"/>
+  <text x="590" y="78" text-anchor="middle" fill="#A9B8C2" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17">maintainer-pulse</text>
+
+  <text x="76" y="140" fill="#7DD3C7" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24">$ maintainer-pulse octo-org/octo-repo --format markdown</text>
+
+  <text x="76" y="195" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="30" font-weight="700">Maintainer Pulse: octo-org/octo-repo</text>
+  <text x="76" y="235" fill="#8FA4B0" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18">Generated queue health report for issues and pull requests</text>
+
+  <rect x="76" y="270" width="1010" height="118" rx="12" fill="#0E171D" stroke="#2D4651"/>
+  <text x="104" y="310" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="700">Health Snapshot</text>
+  <text x="104" y="348" fill="#6EE7B7" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="42" font-weight="700">84/100</text>
+  <text x="276" y="332" fill="#D8E2E8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19">Open issues: 47</text>
+  <text x="276" y="362" fill="#D8E2E8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19">Open PRs: 12</text>
+  <text x="506" y="332" fill="#F9C74F" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19">Release blockers: 3</text>
+  <text x="506" y="362" fill="#F9844A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19">Stuck PRs: 5</text>
+  <text x="770" y="332" fill="#D8E2E8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19">Needs response: 8</text>
+  <text x="770" y="362" fill="#D8E2E8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19">Stale: 14</text>
+
+  <text x="76" y="432" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="700">Recommended maintainer block</text>
+  <text x="100" y="468" fill="#D8E2E8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="20">1. Resolve or defer 3 release blockers.</text>
+  <text x="100" y="502" fill="#D8E2E8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="20">2. Review 5 pull requests idle for 7+ days.</text>
+  <text x="100" y="536" fill="#D8E2E8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="20">3. Reply to 8 issues with no maintainer response.</text>
+
+  <rect x="812" y="428" width="274" height="112" rx="12" fill="#10352F" stroke="#1F6B5D"/>
+  <text x="842" y="466" fill="#BDFDEB" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="700">Outputs</text>
+  <text x="842" y="498" fill="#D8FFF5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18">markdown html json</text>
+  <text x="842" y="528" fill="#9DCEC4" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">CLI + GitHub Action</text>
+</svg>
+

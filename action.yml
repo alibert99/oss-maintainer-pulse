@@ -52,7 +52,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: ${{ inputs.python-version }}
 
@@ -96,4 +96,3 @@ runs:
         INPUT_STALE_DAYS: ${{ inputs.stale-days }}
         INPUT_MAX_PAGES: ${{ inputs.max-pages }}
         INPUT_SUMMARY: ${{ inputs.summary }}
-

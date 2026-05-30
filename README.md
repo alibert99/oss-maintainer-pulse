@@ -84,12 +84,12 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-      - uses: alibert99/oss-maintainer-pulse@v0.1.0
+      - uses: alibert99/oss-maintainer-pulse@v0.1.1
         id: pulse
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           output: maintainer-pulse-report.md
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: maintainer-pulse-report
           path: ${{ steps.pulse.outputs.report-path }}

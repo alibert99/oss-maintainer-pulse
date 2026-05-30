@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="oss-maintainer-pulse",
-    version="0.1.0",
+    version="0.1.1",
     description="Offline-first GitHub issue and pull request health reports for open-source maintainers.",
     url="https://github.com/alibert99/oss-maintainer-pulse",
     package_dir={"": "src"},

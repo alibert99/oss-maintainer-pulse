@@ -31,7 +31,7 @@ JSON.
 ## Example
 
 ```yaml
-- uses: alibert99/oss-maintainer-pulse@v0.1.3
+- uses: alibert99/oss-maintainer-pulse@v0.1.4
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     output: maintainer-pulse-report.md

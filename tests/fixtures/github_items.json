@@ -1,0 +1,64 @@
+[
+  {
+    "number": 101,
+    "title": "Security regression in token refresh",
+    "state": "open",
+    "labels": [{"name": "security"}, {"name": "regression"}],
+    "user": {"login": "alice"},
+    "html_url": "https://github.com/example/project/issues/101",
+    "created_at": "2026-04-01T12:00:00Z",
+    "updated_at": "2026-04-05T12:00:00Z",
+    "closed_at": null,
+    "comments": 5
+  },
+  {
+    "number": 102,
+    "title": "Document config file search order",
+    "state": "open",
+    "labels": [{"name": "documentation"}, {"name": "good first issue"}],
+    "user": {"login": "bob"},
+    "html_url": "https://github.com/example/project/issues/102",
+    "created_at": "2026-05-15T12:00:00Z",
+    "updated_at": "2026-05-20T12:00:00Z",
+    "closed_at": null,
+    "comments": 1
+  },
+  {
+    "number": 103,
+    "title": "No response on installer failure",
+    "state": "open",
+    "labels": [],
+    "user": {"login": "casey"},
+    "html_url": "https://github.com/example/project/issues/103",
+    "created_at": "2026-05-01T12:00:00Z",
+    "updated_at": "2026-05-01T12:00:00Z",
+    "closed_at": null,
+    "comments": 0
+  },
+  {
+    "number": 104,
+    "title": "Add release checklist output",
+    "state": "open",
+    "labels": [{"name": "needs review"}],
+    "user": {"login": "drew"},
+    "html_url": "https://github.com/example/project/pull/104",
+    "created_at": "2026-05-10T12:00:00Z",
+    "updated_at": "2026-05-11T12:00:00Z",
+    "closed_at": null,
+    "comments": 3,
+    "pull_request": {"url": "https://api.github.com/repos/example/project/pulls/104"}
+  },
+  {
+    "number": 105,
+    "title": "Fix stale label automation",
+    "state": "closed",
+    "labels": [{"name": "bug"}],
+    "user": {"login": "erin"},
+    "html_url": "https://github.com/example/project/issues/105",
+    "created_at": "2026-05-01T12:00:00Z",
+    "updated_at": "2026-05-03T12:00:00Z",
+    "closed_at": "2026-05-03T12:00:00Z",
+    "comments": 2
+  }
+]
+

@@ -1,0 +1,20 @@
+name: Feature request
+description: Suggest a queue, output format, integration, or maintainer workflow.
+title: "[Feature]: "
+labels: ["enhancement", "needs triage"]
+body:
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Maintainer workflow
+      description: What real maintainer task would this improve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the behavior you want Maintainer Pulse to support.
+    validations:
+      required: true
+

@@ -20,7 +20,7 @@ inputs:
     required: false
     default: ""
   format:
-    description: Report format.
+    description: Report format: markdown, html, json, or csv.
     required: false
     default: markdown
   output:

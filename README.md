@@ -20,7 +20,7 @@ token, or fetch live issue and pull request data from the GitHub API.
 ## Features
 
 - Release blocker, stuck pull request, stale item, first-response, and quick-win queues.
-- Markdown, HTML, and JSON output.
+- Markdown, HTML, JSON, and CSV output.
 - Reusable GitHub Action for scheduled reports.
 - No runtime dependencies.
 - Deterministic scoring that can be reviewed and changed by maintainers.
@@ -72,7 +72,14 @@ Generate machine-readable output:
 maintainer-pulse octo-org/octo-repo --format json
 ```
 
+Generate spreadsheet-friendly output:
+
+```bash
+maintainer-pulse octo-org/octo-repo --format csv --output maintainer-pulse-report.csv
+```
+
 See [examples/sample-report.md](examples/sample-report.md) for a generated report.
+See [examples/sample-report.csv](examples/sample-report.csv) for spreadsheet-friendly output.
 
 ## GitHub Action
 
@@ -95,7 +102,7 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-      - uses: alibert99/oss-maintainer-pulse@v0.1.2
+      - uses: alibert99/oss-maintainer-pulse@v0.1.3
         id: pulse
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -124,6 +131,10 @@ Maintainer Pulse groups work into five queues:
 - `stale_items`: open items idle beyond the configured stale threshold.
 - `quick_wins`: small contributor-friendly issues labeled `good first issue`,
   `help wanted`, `documentation`, or `starter`.
+
+CSV output includes one row per queued item with the queue name, item number,
+type, state, labels, author, comment count, idle days, age days, timestamps, and
+URL.
 
 ## Project Status
 

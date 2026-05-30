@@ -21,7 +21,7 @@ Generate issue and pull request health reports for open-source maintainers.
 
 Maintainer Pulse helps maintainers see what needs attention before the next
 release. It reads GitHub issue and pull request metadata, scores queue health,
-and writes Markdown, HTML, or JSON reports.
+and writes Markdown, HTML, JSON, or CSV reports.
 
 Use it to surface release blockers, stuck pull requests, issues with no
 maintainer response, stale items, and contributor-friendly quick wins. It can run
@@ -31,7 +31,7 @@ JSON.
 ## Example
 
 ```yaml
-- uses: alibert99/oss-maintainer-pulse@v0.1.2
+- uses: alibert99/oss-maintainer-pulse@v0.1.3
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     output: maintainer-pulse-report.md

@@ -23,7 +23,7 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-      - uses: alibert99/oss-maintainer-pulse@v0.1.2
+      - uses: alibert99/oss-maintainer-pulse@v0.1.3
         id: pulse
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -41,7 +41,7 @@ jobs:
 | `repository` | current repo | Repository to analyze as `owner/name`. |
 | `github-token` | empty | Token for GitHub API requests. |
 | `input-json` | empty | Offline JSON payload to analyze instead of calling GitHub. |
-| `format` | `markdown` | Report format: `markdown`, `html`, or `json`. |
+| `format` | `markdown` | Report format: `markdown`, `html`, `json`, or `csv`. |
 | `output` | `maintainer-pulse-report.md` | Report output path. |
 | `stale-days` | `30` | Idle-day threshold for stale items. |
 | `max-pages` | `2` | Maximum GitHub API pages to fetch. |

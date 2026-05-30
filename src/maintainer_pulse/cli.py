@@ -8,7 +8,7 @@ from pathlib import Path
 from . import __version__
 from .analysis import analyze
 from .github import fetch_items, load_items
-from .report import render_html, render_json, render_markdown
+from .report import render_csv, render_html, render_json, render_markdown
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -33,7 +33,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--format",
-        choices=("markdown", "html", "json"),
+        choices=("markdown", "html", "json", "csv"),
         default="markdown",
         help="Report format.",
     )
@@ -101,4 +101,6 @@ def _render(format_name: str, pulse):
         return render_html(pulse)
     if format_name == "json":
         return render_json(pulse)
+    if format_name == "csv":
+        return render_csv(pulse)
     raise ValueError(f"Unsupported format: {format_name}")

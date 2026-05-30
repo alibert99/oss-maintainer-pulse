@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import csv
 import html
+import io
 import json
 from datetime import datetime
 from typing import Any
@@ -58,6 +60,34 @@ def render_markdown(report: PulseReport, *, limit: int = 10) -> str:
 
 def render_json(report: PulseReport, *, limit: int = 25) -> str:
     return json.dumps(_report_to_dict(report, limit=limit), indent=2, sort_keys=True)
+
+
+def render_csv(report: PulseReport, *, limit: int = 25) -> str:
+    output = io.StringIO()
+    writer = csv.DictWriter(
+        output,
+        fieldnames=[
+            "queue",
+            "number",
+            "title",
+            "type",
+            "state",
+            "labels",
+            "author",
+            "comments",
+            "idle_days",
+            "age_days",
+            "created_at",
+            "updated_at",
+            "closed_at",
+            "url",
+        ],
+    )
+    writer.writeheader()
+    for queue_name, items in report.queues.items():
+        for item in items[:limit]:
+            writer.writerow(_csv_item(queue_name, item, report.generated_at))
+    return output.getvalue()
 
 
 def render_html(report: PulseReport, *, limit: int = 10) -> str:
@@ -205,6 +235,25 @@ def _item_to_dict(item: WorkItem, now: datetime) -> dict[str, Any]:
     }
 
 
+def _csv_item(queue_name: str, item: WorkItem, now: datetime) -> dict[str, Any]:
+    return {
+        "queue": queue_name,
+        "number": item.number,
+        "title": item.title,
+        "type": "pull_request" if item.is_pull_request else "issue",
+        "state": item.state,
+        "labels": "; ".join(item.labels),
+        "author": item.author,
+        "comments": item.comments,
+        "idle_days": idle_days(item, now),
+        "age_days": age_days(item, now),
+        "created_at": item.created_at.isoformat(timespec="seconds"),
+        "updated_at": item.updated_at.isoformat(timespec="seconds"),
+        "closed_at": item.closed_at.isoformat(timespec="seconds") if item.closed_at else "",
+        "url": item.html_url,
+    }
+
+
 def _html_item(item: dict[str, Any]) -> str:
     labels = "".join(f"<span class=\"label\">{html.escape(label)}</span>" for label in item["labels"])
     url = html.escape(item["html_url"])
@@ -222,4 +271,3 @@ def escape_markdown(value: str) -> str:
 
 def _display_optional(value: float | None) -> str:
     return "-" if value is None else str(value)
-

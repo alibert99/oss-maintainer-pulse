@@ -21,7 +21,7 @@ Use PyPI trusted publishing instead of storing a long-lived API token in GitHub.
    - Workflow: `publish-pypi.yml`
    - Environment: `pypi`
 3. In GitHub, create the `pypi` environment.
-4. Run the `Publish to PyPI` workflow for a tagged release.
+4. Run the `Publish to PyPI` workflow for a tagged release such as `v0.1.3`.
 
 The workflow is manual on purpose so package publishing does not fail before
 trusted publishing is configured.

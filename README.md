@@ -126,6 +126,7 @@ See [docs/github-action.md](docs/github-action.md) for all inputs.
 ## Distribution
 
 - GitHub Action listing draft: [docs/marketplace-listing.md](docs/marketplace-listing.md)
+- Launch kit for sharing the project: [docs/launch-kit.md](docs/launch-kit.md)
 - PyPI publishing guide: [docs/pypi-publishing.md](docs/pypi-publishing.md)
 
 ## Output Queues

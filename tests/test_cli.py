@@ -68,6 +68,7 @@ def test_cli_writes_csv_report(tmp_path):
 
     assert exit_code == 0
     text = output.read_text(encoding="utf-8")
-    assert text.startswith("queue,number,title,type,state,labels")
+    assert text.startswith("queue,number,title,type,state,labels,milestone")
     assert "release_blockers,101,Security regression in token refresh,issue,open" in text
+    assert "security; regression,v1.0,alice" in text
     assert "stuck_pull_requests,104,Add release checklist output,pull_request,open" in text

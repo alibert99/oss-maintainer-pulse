@@ -28,10 +28,13 @@ maintainer response, stale items, and contributor-friendly quick wins. It can ru
 as a scheduled GitHub Action or as an offline-first CLI against exported GitHub
 JSON.
 
+Markdown reports group release blockers by milestone when GitHub milestone data
+is available, which makes release readiness reviews easier to scan.
+
 ## Example
 
 ```yaml
-- uses: alibert99/oss-maintainer-pulse@v0.1.4
+- uses: alibert99/oss-maintainer-pulse@v0.1.5
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     output: maintainer-pulse-report.md

@@ -1,6 +1,6 @@
 # Maintainer Pulse: example/project
 
-Generated: 2026-05-30T20:14:54+00:00
+Generated: 2026-05-30T21:28:29+00:00
 
 ## Health Snapshot
 
@@ -22,6 +22,8 @@ Generated: 2026-05-30T20:14:54+00:00
 - Close, relabel, or revive 1 item(s) idle past the stale threshold.
 
 ## Release Blockers
+
+### v1.0
 
 | Item | Labels | Idle | Age |
 | --- | --- | ---: | ---: |

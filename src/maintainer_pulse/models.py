@@ -25,6 +25,7 @@ class WorkItem:
     closed_at: datetime | None
     comments: int
     is_pull_request: bool
+    milestone_title: str | None = None
     draft: bool = False
 
     @classmethod
@@ -40,6 +41,7 @@ class WorkItem:
             raise ValueError(f"GitHub item #{payload.get('number')} is missing timestamps")
 
         pull_request = payload.get("pull_request") or {}
+        milestone = payload.get("milestone") or {}
         return cls(
             number=int(payload["number"]),
             title=str(payload.get("title") or "").strip(),
@@ -52,6 +54,13 @@ class WorkItem:
             closed_at=parse_github_datetime(payload.get("closed_at")),
             comments=int(payload.get("comments") or 0),
             is_pull_request="pull_request" in payload,
+            milestone_title=_milestone_title(milestone),
             draft=bool(pull_request.get("draft", False)),
         )
 
+
+def _milestone_title(milestone: Any) -> str | None:
+    if not isinstance(milestone, dict):
+        return None
+    title = str(milestone.get("title") or "").strip()
+    return title or None

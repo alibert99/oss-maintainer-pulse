@@ -45,7 +45,10 @@ def render_markdown(report: PulseReport, *, limit: int = 10) -> str:
         ("Stale Queue", "stale_items"),
         ("Quick Wins", "quick_wins"),
     ):
-        lines.extend(_markdown_queue(title, report.queues[key], report.generated_at, limit=limit))
+        if key == "release_blockers":
+            lines.extend(_markdown_release_blockers(report.queues[key], report.generated_at, limit=limit))
+        else:
+            lines.extend(_markdown_queue(title, report.queues[key], report.generated_at, limit=limit))
 
     lines.extend(
         [
@@ -73,6 +76,7 @@ def render_csv(report: PulseReport, *, limit: int = 25) -> str:
             "type",
             "state",
             "labels",
+            "milestone",
             "author",
             "comments",
             "idle_days",
@@ -191,15 +195,42 @@ def _markdown_queue(
         lines.extend(["No items in this queue.", ""])
         return lines
 
-    lines.extend(["| Item | Labels | Idle | Age |", "| --- | --- | ---: | ---: |"])
+    lines.extend(_markdown_items_table(items[:limit], now))
+    lines.append("")
+    return lines
+
+
+def _markdown_release_blockers(
+    items: list[WorkItem],
+    now: datetime,
+    *,
+    limit: int,
+) -> list[str]:
+    lines = ["## Release Blockers", ""]
+    if not items:
+        lines.extend(["No items in this queue.", ""])
+        return lines
+
+    grouped: dict[str, list[WorkItem]] = {}
     for item in items[:limit]:
+        grouped.setdefault(item.milestone_title or "No milestone", []).append(item)
+
+    for milestone in sorted(grouped, key=lambda name: (name == "No milestone", name.lower())):
+        lines.extend([f"### {escape_markdown(milestone)}", ""])
+        lines.extend(_markdown_items_table(grouped[milestone], now))
+        lines.append("")
+    return lines
+
+
+def _markdown_items_table(items: list[WorkItem], now: datetime) -> list[str]:
+    lines = ["| Item | Labels | Idle | Age |", "| --- | --- | ---: | ---: |"]
+    for item in items:
         item_link = f"[#{item.number} {escape_markdown(item.title)}]({item.html_url})"
         labels = ", ".join(item.labels) if item.labels else "-"
         lines.append(
             f"| {item_link} | {escape_markdown(labels)} | {idle_days(item, now)}d | "
             f"{age_days(item, now)}d |"
         )
-    lines.append("")
     return lines
 
 
@@ -225,6 +256,7 @@ def _item_to_dict(item: WorkItem, now: datetime) -> dict[str, Any]:
         "labels": list(item.labels),
         "author": item.author,
         "html_url": item.html_url,
+        "milestone_title": item.milestone_title,
         "created_at": item.created_at.isoformat(timespec="seconds"),
         "updated_at": item.updated_at.isoformat(timespec="seconds"),
         "closed_at": item.closed_at.isoformat(timespec="seconds") if item.closed_at else None,
@@ -243,6 +275,7 @@ def _csv_item(queue_name: str, item: WorkItem, now: datetime) -> dict[str, Any]:
         "type": "pull_request" if item.is_pull_request else "issue",
         "state": item.state,
         "labels": "; ".join(item.labels),
+        "milestone": item.milestone_title or "",
         "author": item.author,
         "comments": item.comments,
         "idle_days": idle_days(item, now),
@@ -258,9 +291,16 @@ def _html_item(item: dict[str, Any]) -> str:
     labels = "".join(f"<span class=\"label\">{html.escape(label)}</span>" for label in item["labels"])
     url = html.escape(item["html_url"])
     title = html.escape(item["title"])
+    details = [
+        f"{item['idle_days']} idle days",
+        f"{item['age_days']} days old",
+        f"{item['comments']} comments",
+    ]
+    if item["milestone_title"]:
+        details.append(f"milestone: {html.escape(item['milestone_title'])}")
     return f"""<article class="item">
   <a href="{url}">#{item["number"]} {title}</a>
-  <p>{item["idle_days"]} idle days · {item["age_days"]} days old · {item["comments"]} comments</p>
+  <p>{' · '.join(details)}</p>
   <div class="labels">{labels}</div>
 </article>"""
 

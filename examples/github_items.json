@@ -7,6 +7,7 @@
       "labels": [{"name": "release-blocker"}, {"name": "bug"}],
       "user": {"login": "maintainer"},
       "html_url": "https://github.com/acme/widgets/issues/1",
+      "milestone": {"title": "v1.0"},
       "created_at": "2026-05-01T10:00:00Z",
       "updated_at": "2026-05-03T10:00:00Z",
       "closed_at": null,
@@ -26,4 +27,3 @@
     }
   ]
 }
-

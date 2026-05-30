@@ -20,6 +20,7 @@ def test_analyze_prioritizes_maintenance_queues():
     assert pulse.metrics.stuck_pull_requests == 1
     assert pulse.metrics.stale_items == 2
     assert pulse.queues["release_blockers"][0].number == 101
+    assert pulse.queues["release_blockers"][0].milestone_title == "v1.0"
     assert pulse.queues["quick_wins"][0].number == 102
 
 
@@ -31,6 +32,7 @@ def test_markdown_report_contains_actionable_sections():
 
     assert "# Maintainer Pulse: example/project" in rendered
     assert "## Release Blockers" in rendered
+    assert "### v1.0" in rendered
     assert "#101 Security regression" in rendered
     assert "Recommended Maintainer Block" in rendered
 
@@ -42,4 +44,5 @@ def test_json_report_is_serializable():
     rendered = render_json(pulse)
 
     assert '"health_score"' in rendered
+    assert '"milestone_title": "v1.0"' in rendered
     assert '"release_blockers"' in rendered

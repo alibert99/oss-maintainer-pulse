@@ -21,6 +21,7 @@ token, or fetch live issue and pull request data from the GitHub API.
 ## Features
 
 - Release blocker, stuck pull request, stale item, first-response, and quick-win queues.
+- Milestone-aware release blocker grouping for release planning.
 - Markdown, HTML, JSON, and CSV output.
 - Reusable GitHub Action for scheduled reports.
 - No runtime dependencies.
@@ -109,7 +110,7 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-      - uses: alibert99/oss-maintainer-pulse@v0.1.4
+      - uses: alibert99/oss-maintainer-pulse@v0.1.5
         id: pulse
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -132,7 +133,8 @@ See [docs/github-action.md](docs/github-action.md) for all inputs.
 Maintainer Pulse groups work into five queues:
 
 - `release_blockers`: open issues and pull requests with labels such as `security`,
-  `regression`, `critical`, `release`, `p0`, or `p1`.
+  `regression`, `critical`, `release`, `p0`, or `p1`. Markdown reports group
+  release blockers by GitHub milestone when milestone data is present.
 - `stuck_pull_requests`: pull requests idle for at least seven days or labeled for review.
 - `response_debt`: open items with zero comments and at least three idle days.
 - `stale_items`: open items idle beyond the configured stale threshold.

@@ -1,4 +1,4 @@
-queue,number,title,type,state,labels,author,comments,idle_days,age_days,created_at,updated_at,closed_at,url
-release_blockers,1,Release blocker: migration command fails on Windows,issue,open,release-blocker; bug,maintainer,4,27,29,2026-05-01T10:00:00+00:00,2026-05-03T10:00:00+00:00,,https://github.com/acme/widgets/issues/1
-stale_items,1,Release blocker: migration command fails on Windows,issue,open,release-blocker; bug,maintainer,4,27,29,2026-05-01T10:00:00+00:00,2026-05-03T10:00:00+00:00,,https://github.com/acme/widgets/issues/1
-quick_wins,2,Add getting-started screenshot,issue,open,good first issue; documentation,new-contributor,1,8,10,2026-05-20T10:00:00+00:00,2026-05-22T10:00:00+00:00,,https://github.com/acme/widgets/issues/2
+queue,number,title,type,state,labels,milestone,author,comments,idle_days,age_days,created_at,updated_at,closed_at,url
+release_blockers,1,Release blocker: migration command fails on Windows,issue,open,release-blocker; bug,v1.0,maintainer,4,27,29,2026-05-01T10:00:00+00:00,2026-05-03T10:00:00+00:00,,https://github.com/acme/widgets/issues/1
+stale_items,1,Release blocker: migration command fails on Windows,issue,open,release-blocker; bug,v1.0,maintainer,4,27,29,2026-05-01T10:00:00+00:00,2026-05-03T10:00:00+00:00,,https://github.com/acme/widgets/issues/1
+quick_wins,2,Add getting-started screenshot,issue,open,good first issue; documentation,,new-contributor,1,8,10,2026-05-20T10:00:00+00:00,2026-05-22T10:00:00+00:00,,https://github.com/acme/widgets/issues/2

@@ -20,6 +20,9 @@ question: what should a maintainer look at first?
 - Community response: surface open items with no maintainer response.
 - Queue hygiene: identify items idle past the stale threshold.
 - Contributor onboarding: list small labeled issues that are likely quick wins.
+- Duplicate review: surface likely duplicate issue pairs from similar titles.
+- Optional AI support: generate a concise maintainer agenda when a maintainer
+  explicitly enables the OpenAI summary feature.
 
 The report is deterministic and reviewable. Maintainers can see the exact labels,
 timestamps, and thresholds that caused an item to appear in a queue.
@@ -54,7 +57,7 @@ Maintainer Pulse is read-only by default. It does not comment on issues, label
 items, close issues, merge pull requests, or write to a repository unless a future
 feature is explicitly designed and enabled by the maintainer.
 
-Optional AI-assisted summaries are planned as an opt-in feature. Any AI-backed
+Optional AI-assisted summaries are available as an opt-in feature. Any AI-backed
 feature should preserve these rules:
 
 - No API calls unless a maintainer provides an API key.
@@ -62,4 +65,3 @@ feature should preserve these rules:
 - Reports must identify which output is deterministic and which output is
   generated assistance.
 - Maintainers keep final judgment over release and triage decisions.
-

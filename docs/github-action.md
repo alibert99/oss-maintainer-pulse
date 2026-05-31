@@ -34,6 +34,39 @@ jobs:
           path: ${{ steps.pulse.outputs.report-path }}
 ```
 
+## Optional AI Summary
+
+AI summaries are disabled by default. To enable them, pass an OpenAI API key from
+repository secrets and set `ai-summary` to `true`.
+
+```yaml
+name: Maintainer Pulse
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: alibert99/oss-maintainer-pulse@v0.1.5
+        id: pulse
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          ai-summary: "true"
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          openai-model: gpt-5-mini
+      - uses: actions/upload-artifact@v7
+        with:
+          name: maintainer-pulse-report
+          path: ${{ steps.pulse.outputs.report-path }}
+```
+
 ## Inputs
 
 | Input | Default | Description |
@@ -46,3 +79,7 @@ jobs:
 | `stale-days` | `30` | Idle-day threshold for stale items. |
 | `max-pages` | `2` | Maximum GitHub API pages to fetch. |
 | `summary` | `true` | Append Markdown reports to the job summary. |
+| `ai-summary` | `false` | Generate an optional OpenAI maintainer summary. |
+| `openai-api-key` | empty | OpenAI API key used only when `ai-summary` is `true`. |
+| `openai-model` | `gpt-5-mini` | OpenAI model for optional summaries. |
+| `openai-timeout` | `30` | OpenAI API timeout in seconds. |

@@ -43,6 +43,22 @@ inputs:
     description: Append Markdown reports to the GitHub Actions job summary.
     required: false
     default: "true"
+  ai-summary:
+    description: Generate an optional OpenAI maintainer summary. Requires openai-api-key.
+    required: false
+    default: "false"
+  openai-api-key:
+    description: OpenAI API key used only when ai-summary is true.
+    required: false
+    default: ""
+  openai-model:
+    description: OpenAI model used for optional AI summaries.
+    required: false
+    default: gpt-5-mini
+  openai-timeout:
+    description: OpenAI API timeout in seconds for optional AI summaries.
+    required: false
+    default: "30"
 
 outputs:
   report-path:
@@ -81,6 +97,14 @@ runs:
           args+=("--input" "$INPUT_JSON")
         fi
 
+        if [ "$INPUT_AI_SUMMARY" = "true" ]; then
+          args+=(
+            "--ai-summary"
+            "--openai-model" "$INPUT_OPENAI_MODEL"
+            "--openai-timeout" "$INPUT_OPENAI_TIMEOUT"
+          )
+        fi
+
         maintainer-pulse "${args[@]}"
         echo "report-path=$INPUT_OUTPUT" >> "$GITHUB_OUTPUT"
 
@@ -96,3 +120,7 @@ runs:
         INPUT_STALE_DAYS: ${{ inputs.stale-days }}
         INPUT_MAX_PAGES: ${{ inputs.max-pages }}
         INPUT_SUMMARY: ${{ inputs.summary }}
+        INPUT_AI_SUMMARY: ${{ inputs.ai-summary }}
+        INPUT_OPENAI_MODEL: ${{ inputs.openai-model }}
+        INPUT_OPENAI_TIMEOUT: ${{ inputs.openai-timeout }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}

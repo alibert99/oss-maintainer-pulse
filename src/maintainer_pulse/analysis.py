@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
+import re
 from statistics import median
 
 from .models import WorkItem
@@ -18,6 +19,24 @@ RELEASE_LABELS = {
 }
 QUICK_WIN_LABELS = {"documentation", "good first issue", "help wanted", "starter"}
 REVIEW_LABELS = {"blocked", "needs review", "review", "waiting on maintainer"}
+TITLE_STOP_WORDS = {
+    "a",
+    "an",
+    "and",
+    "are",
+    "as",
+    "for",
+    "from",
+    "in",
+    "is",
+    "it",
+    "of",
+    "on",
+    "or",
+    "the",
+    "to",
+    "with",
+}
 
 
 @dataclass(frozen=True)
@@ -34,13 +53,25 @@ class PulseMetrics:
 
 
 @dataclass(frozen=True)
+class DuplicateCandidate:
+    first: WorkItem
+    second: WorkItem
+    similarity: float
+    shared_terms: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class PulseReport:
     repository: str
     generated_at: datetime
     stale_days: int
     metrics: PulseMetrics
     queues: dict[str, list[WorkItem]]
+    duplicate_candidates: list[DuplicateCandidate]
     recommendations: list[str]
+    ai_summary: str | None = None
+    ai_provider: str | None = None
+    ai_model: str | None = None
 
 
 def analyze(
@@ -120,6 +151,7 @@ def analyze(
         stale_days=stale_days,
         metrics=metrics,
         queues=queues,
+        duplicate_candidates=_duplicate_candidates(open_issues),
         recommendations=_recommend(metrics),
     )
 
@@ -143,6 +175,49 @@ def _has_any_label(item: WorkItem, targets: set[str]) -> bool:
 
 def _sort_by_idle(items: list[WorkItem], now: datetime) -> list[WorkItem]:
     return sorted(items, key=lambda item: idle_days(item, now), reverse=True)
+
+
+def _duplicate_candidates(
+    items: list[WorkItem],
+    *,
+    threshold: float = 0.5,
+    limit: int = 10,
+) -> list[DuplicateCandidate]:
+    candidates: list[DuplicateCandidate] = []
+    tokenized = [(item, _title_terms(item.title)) for item in items]
+
+    for index, (first, first_terms) in enumerate(tokenized):
+        if len(first_terms) < 2:
+            continue
+        for second, second_terms in tokenized[index + 1 :]:
+            if len(second_terms) < 2:
+                continue
+
+            shared = first_terms.intersection(second_terms)
+            if len(shared) < 2:
+                continue
+
+            union = first_terms.union(second_terms)
+            similarity = len(shared) / len(union)
+            if similarity >= threshold:
+                candidates.append(
+                    DuplicateCandidate(
+                        first=first,
+                        second=second,
+                        similarity=round(similarity, 2),
+                        shared_terms=tuple(sorted(shared)),
+                    )
+                )
+
+    return sorted(candidates, key=lambda candidate: candidate.similarity, reverse=True)[:limit]
+
+
+def _title_terms(title: str) -> set[str]:
+    return {
+        term
+        for term in re.findall(r"[a-z0-9]+", title.lower())
+        if len(term) > 2 and term not in TITLE_STOP_WORDS
+    }
 
 
 def _score(
@@ -188,4 +263,3 @@ def _recommend(metrics: PulseMetrics) -> list[str]:
     if not recommendations:
         recommendations.append("Queue health is strong; keep the current review and release cadence.")
     return recommendations
-

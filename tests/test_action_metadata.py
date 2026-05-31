@@ -10,6 +10,8 @@ def test_action_metadata_exposes_core_inputs():
     assert "using: composite" in text
     assert "github-token:" in text
     assert "stale-days:" in text
+    assert "ai-summary:" in text
+    assert "openai-api-key:" in text
+    assert "--ai-summary" in text
     assert "report-path:" in text
     assert "maintainer-pulse" in text
-

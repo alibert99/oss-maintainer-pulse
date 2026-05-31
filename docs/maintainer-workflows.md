@@ -15,6 +15,9 @@ Good outcomes:
 - Items with no response get a first maintainer reply.
 - Stale items are relabeled, revived, or closed.
 
+If `--ai-summary` is enabled, use the AI maintainer summary as an agenda draft,
+not as authority. The deterministic queue tables remain the source of truth.
+
 ## Release Planning
 
 Before a release, run a report with the repository's normal stale threshold. Start
@@ -58,7 +61,8 @@ Maintainer Pulse should be safe to run in public CI:
 - It does not require a hosted backend.
 - It does not require runtime dependencies.
 - It does not write comments, labels, or repository changes.
+- OpenAI summaries are disabled unless a maintainer explicitly enables them and
+  provides an API key.
 
 Future write-capable features should be separate opt-in workflows with clear
 permissions and tests.
-

@@ -1,0 +1,78 @@
+# Maintainer Pulse: pytest-dev/pytest
+
+Generated: 2026-05-31T11:58:53+00:00
+
+Snapshot note: this example was generated with `--max-pages 2`; metrics reflect
+the fetched GitHub API pages rather than a full repository audit.
+
+## Health Snapshot
+
+| Metric | Value |
+| --- | ---: |
+| Health score | 70/100 |
+| Open issues | 12 |
+| Open pull requests | 21 |
+| Release blockers | 0 |
+| Stuck pull requests | 16 |
+| Response debt | 11 |
+| Stale items (30+ idle days) | 5 |
+| Closed in last 90 days | 167 |
+| Median days to close | 0.4 |
+
+## Recommended Maintainer Block
+
+- Start review time with 16 stuck pull request(s).
+- Reply to 11 open item(s) with no maintainer response.
+- Close, relabel, or revive 5 item(s) idle past the stale threshold.
+
+## Release Blockers
+
+No items in this queue.
+
+## Stuck Pull Requests
+
+| Item | Labels | Idle | Age |
+| --- | --- | ---: | ---: |
+| [#14332 BugFix #14329](https://github.com/pytest-dev/pytest/pull/14332) | bot:chronographer:provided | 53d | 64d |
+| [#14397 Issue 14112](https://github.com/pytest-dev/pytest/pull/14397) | bot:chronographer:provided | 41d | 41d |
+| [#14417 Fix phantom nodeid for tests collected outside rootpath (#13254)](https://github.com/pytest-dev/pytest/pull/14417) | bot:chronographer:provided | 36d | 36d |
+| [#14423 test: cover tmpdir get_user OSError fallback](https://github.com/pytest-dev/pytest/pull/14423) | bot:chronographer:provided | 34d | 34d |
+| [#14448 feat(rewrite): address assertion rewriting blind spots with systematic tests](https://github.com/pytest-dev/pytest/pull/14448) | bot:chronographer:provided | 22d | 22d |
+| [#14446 Fix walrus double eval](https://github.com/pytest-dev/pytest/pull/14446) | bot:chronographer:provided | 22d | 23d |
+| [#14327 Avoid rechecking RaisesGroup callbacks](https://github.com/pytest-dev/pytest/pull/14327) | bot:chronographer:provided | 20d | 65d |
+| [#14463 WIP: broaden isdict() to support generic Mapping types (#14461) [no review yet]](https://github.com/pytest-dev/pytest/pull/14463) | - | 19d | 19d |
+| [#14432 Add tee-fd capture mode and capteefd fixtures](https://github.com/pytest-dev/pytest/pull/14432) | bot:chronographer:provided | 18d | 30d |
+| [#14480 [PR #14472/21be7a25 backport][9.0.x] Fix _as_numpy_array: use variable obj instead of string literal "obj"](https://github.com/pytest-dev/pytest/pull/14480) | - | 17d | 17d |
+
+## Needs First Response
+
+| Item | Labels | Idle | Age |
+| --- | --- | ---: | ---: |
+| [#14397 Issue 14112](https://github.com/pytest-dev/pytest/pull/14397) | bot:chronographer:provided | 41d | 41d |
+| [#14417 Fix phantom nodeid for tests collected outside rootpath (#13254)](https://github.com/pytest-dev/pytest/pull/14417) | bot:chronographer:provided | 36d | 36d |
+| [#14423 test: cover tmpdir get_user OSError fallback](https://github.com/pytest-dev/pytest/pull/14423) | bot:chronographer:provided | 34d | 34d |
+| [#14444 Forcing `--capture=sys` without passing the CLI flag seems impossible?](https://github.com/pytest-dev/pytest/issues/14444) | type: question, plugin: capture, platform: linux | 24d | 24d |
+| [#14448 feat(rewrite): address assertion rewriting blind spots with systematic tests](https://github.com/pytest-dev/pytest/pull/14448) | bot:chronographer:provided | 22d | 22d |
+| [#14463 WIP: broaden isdict() to support generic Mapping types (#14461) [no review yet]](https://github.com/pytest-dev/pytest/pull/14463) | - | 19d | 19d |
+| [#14480 [PR #14472/21be7a25 backport][9.0.x] Fix _as_numpy_array: use variable obj instead of string literal "obj"](https://github.com/pytest-dev/pytest/pull/14480) | - | 17d | 17d |
+| [#14451 terminal: add --name-only option to show only names of failed tests](https://github.com/pytest-dev/pytest/pull/14451) | bot:chronographer:provided | 12d | 22d |
+| [#14500 Windows fatal exception: access violation (GC crash on exit) with Python 3.14.5](https://github.com/pytest-dev/pytest/issues/14500) | - | 10d | 10d |
+| [#14494 build(deps): Bump hynek/build-and-inspect-python-package from 2.17.0 to 2.18.0](https://github.com/pytest-dev/pytest/pull/14494) | dependencies, github_actions | 7d | 13d |
+
+## Stale Queue
+
+| Item | Labels | Idle | Age |
+| --- | --- | ---: | ---: |
+| [#14332 BugFix #14329](https://github.com/pytest-dev/pytest/pull/14332) | bot:chronographer:provided | 53d | 64d |
+| [#14329 get_closest_marker is working unexpectedly](https://github.com/pytest-dev/pytest/issues/14329) | type: bug, topic: marks | 53d | 64d |
+| [#14397 Issue 14112](https://github.com/pytest-dev/pytest/pull/14397) | bot:chronographer:provided | 41d | 41d |
+| [#14417 Fix phantom nodeid for tests collected outside rootpath (#13254)](https://github.com/pytest-dev/pytest/pull/14417) | bot:chronographer:provided | 36d | 36d |
+| [#14423 test: cover tmpdir get_user OSError fallback](https://github.com/pytest-dev/pytest/pull/14423) | bot:chronographer:provided | 34d | 34d |
+
+## Quick Wins
+
+No items in this queue.
+
+---
+
+Generated by Maintainer Pulse. Verify labels and context before making release decisions.

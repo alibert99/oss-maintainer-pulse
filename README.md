@@ -11,12 +11,27 @@ maintenance report. It is built for open-source maintainers who need to answer:
 The tool is offline-first. You can run it against exported GitHub JSON without a
 token, or fetch live issue and pull request data from the GitHub API.
 
+Maintainer Pulse is intentionally read-only and deterministic, so maintainers can
+use it in public CI, release planning, and contributor onboarding without giving
+the tool write permissions or depending on a hosted service.
+
 [![CI](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/ci.yml/badge.svg)](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/ci.yml)
 [![Package](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/package.yml/badge.svg)](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/package.yml)
 [![Maintainer Pulse](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/maintainer-pulse.yml/badge.svg)](https://github.com/alibert99/oss-maintainer-pulse/actions/workflows/maintainer-pulse.yml)
 [![PyPI](https://img.shields.io/pypi/v/oss-maintainer-pulse.svg)](https://pypi.org/project/oss-maintainer-pulse/)
 
 ![Maintainer Pulse terminal preview](https://raw.githubusercontent.com/alibert99/oss-maintainer-pulse/main/assets/terminal-preview.svg)
+
+## Why It Matters
+
+Open-source maintainers often have limited review time and noisy queues. A
+weekly Maintainer Pulse report gives maintainers a small, auditable review block:
+release blockers first, then stuck pull requests, first-response debt, stale
+items, and contributor-friendly quick wins.
+
+The goal is not to replace maintainer judgment. The goal is to make the next
+maintenance session easier to start, easier to share with co-maintainers, and
+easier for new contributors to understand.
 
 ## Features
 
@@ -89,6 +104,11 @@ maintainer-pulse octo-org/octo-repo --format csv --output maintainer-pulse-repor
 See [examples/sample-report.md](examples/sample-report.md) for a generated report.
 See [examples/sample-report.csv](examples/sample-report.csv) for spreadsheet-friendly output.
 
+Real public-repository examples are available in
+[examples/real-world](examples/real-world). These examples are generated from
+live GitHub issue and pull request metadata with a limited page depth so the
+reports stay small enough to review in the repository.
+
 ## GitHub Action
 
 Run Maintainer Pulse weekly and upload a report artifact:
@@ -123,8 +143,12 @@ jobs:
 
 See [docs/github-action.md](docs/github-action.md) for all inputs.
 
-## Distribution
+## Project Health
 
+- Project impact and maintainer plan: [PROJECT_IMPACT.md](PROJECT_IMPACT.md)
+- Maintainer workflow examples: [docs/maintainer-workflows.md](docs/maintainer-workflows.md)
+- Roadmap: [docs/roadmap.md](docs/roadmap.md)
+- Support: [SUPPORT.md](SUPPORT.md)
 - GitHub Action listing draft: [docs/marketplace-listing.md](docs/marketplace-listing.md)
 - Launch kit for sharing the project: [docs/launch-kit.md](docs/launch-kit.md)
 - PyPI publishing guide: [docs/pypi-publishing.md](docs/pypi-publishing.md)
@@ -149,4 +173,6 @@ URL.
 ## Project Status
 
 This project is alpha. The CLI and report fields may change as maintainers test it
-against real repositories.
+against real repositories. Feedback from maintainers with active issue and pull
+request queues is especially useful while the scoring rules are still small and
+easy to audit.

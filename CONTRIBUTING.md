@@ -17,10 +17,12 @@ ruff check .
 - Keep GitHub API handling in `src/maintainer_pulse/github.py`.
 - Keep report formatting in `src/maintainer_pulse/report.py`.
 - Avoid adding runtime dependencies unless they remove substantial complexity.
+- Document behavior changes in `README.md`, `docs/`, or example reports when the
+  change affects maintainer workflows.
 
 ## Good First Contributions
 
 - Add report examples for real public repositories.
 - Improve label matching for common maintainer workflows.
-- Add CSV output for teams that track triage in spreadsheets.
-
+- Add tests for edge cases in GitHub issue and pull request payloads.
+- Improve GitHub Action examples for common repository setups.

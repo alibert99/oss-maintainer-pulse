@@ -7,7 +7,7 @@ import json
 from datetime import datetime
 from typing import Any
 
-from .analysis import PulseReport, age_days, idle_days
+from .analysis import DuplicateCandidate, PulseReport, age_days, idle_days
 from .models import WorkItem
 
 
@@ -38,6 +38,21 @@ def render_markdown(report: PulseReport, *, limit: int = 10) -> str:
     lines.extend(f"- {recommendation}" for recommendation in report.recommendations)
     lines.append("")
 
+    if report.ai_summary:
+        lines.extend(
+            [
+                "## AI Maintainer Summary",
+                "",
+                f"Provider: {report.ai_provider or 'unknown'}",
+                f"Model: {report.ai_model or 'unknown'}",
+                "",
+                "AI-generated guidance is advisory. Verify repository context before acting.",
+                "",
+                report.ai_summary.strip(),
+                "",
+            ]
+        )
+
     for title, key in (
         ("Release Blockers", "release_blockers"),
         ("Stuck Pull Requests", "stuck_pull_requests"),
@@ -49,6 +64,8 @@ def render_markdown(report: PulseReport, *, limit: int = 10) -> str:
             lines.extend(_markdown_release_blockers(report.queues[key], report.generated_at, limit=limit))
         else:
             lines.extend(_markdown_queue(title, report.queues[key], report.generated_at, limit=limit))
+
+    lines.extend(_markdown_duplicate_candidates(report.duplicate_candidates, limit=limit))
 
     lines.extend(
         [
@@ -62,7 +79,7 @@ def render_markdown(report: PulseReport, *, limit: int = 10) -> str:
 
 
 def render_json(report: PulseReport, *, limit: int = 25) -> str:
-    return json.dumps(_report_to_dict(report, limit=limit), indent=2, sort_keys=True)
+    return json.dumps(report_to_dict(report, limit=limit), indent=2, sort_keys=True)
 
 
 def render_csv(report: PulseReport, *, limit: int = 25) -> str:
@@ -95,7 +112,7 @@ def render_csv(report: PulseReport, *, limit: int = 25) -> str:
 
 
 def render_html(report: PulseReport, *, limit: int = 10) -> str:
-    data = _report_to_dict(report, limit=limit)
+    data = report_to_dict(report, limit=limit)
     metrics = data["metrics"]
     queue_sections = []
     for title, key in (
@@ -113,6 +130,17 @@ def render_html(report: PulseReport, *, limit: int = 10) -> str:
     recommendations = "".join(
         f"<li>{html.escape(recommendation)}</li>" for recommendation in data["recommendations"]
     )
+    ai_summary = ""
+    if data["ai_summary"]:
+        ai_summary = f"""<section class="recommendations">
+      <h2>AI Maintainer Summary</h2>
+      <p class="meta">Provider: {html.escape(data["ai_summary"]["provider"])} - Model: {html.escape(data["ai_summary"]["model"])}</p>
+      <p class="meta">AI-generated guidance is advisory. Verify repository context before acting.</p>
+      <div>{_html_markdownish(data["ai_summary"]["text"])}</div>
+    </section>"""
+    duplicates = "".join(_html_duplicate(candidate) for candidate in data["duplicate_candidates"])
+    if not duplicates:
+        duplicates = "<p class=\"empty\">No likely duplicate candidates found.</p>"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -176,7 +204,9 @@ def render_html(report: PulseReport, *, limit: int = 10) -> str:
       <h2>Recommended Maintainer Block</h2>
       <ul>{recommendations}</ul>
     </section>
+    {ai_summary}
     {''.join(queue_sections)}
+    <section><h2>Duplicate Candidates</h2>{duplicates}</section>
   </main>
 </body>
 </html>
@@ -234,17 +264,77 @@ def _markdown_items_table(items: list[WorkItem], now: datetime) -> list[str]:
     return lines
 
 
-def _report_to_dict(report: PulseReport, *, limit: int) -> dict[str, Any]:
+def _markdown_duplicate_candidates(
+    candidates: list[DuplicateCandidate],
+    *,
+    limit: int,
+) -> list[str]:
+    lines = ["## Duplicate Candidates", ""]
+    if not candidates:
+        lines.extend(["No likely duplicate candidates found.", ""])
+        return lines
+
+    lines.extend(
+        [
+            "| Items | Similarity | Shared terms |",
+            "| --- | ---: | --- |",
+        ]
+    )
+    for candidate in candidates[:limit]:
+        first = candidate.first
+        second = candidate.second
+        first_link = f"[#{first.number} {escape_markdown(first.title)}]({first.html_url})"
+        second_link = f"[#{second.number} {escape_markdown(second.title)}]({second.html_url})"
+        shared = ", ".join(candidate.shared_terms)
+        lines.append(
+            f"| {first_link}<br>{second_link} | {candidate.similarity:.2f} | "
+            f"{escape_markdown(shared)} |"
+        )
+    lines.append("")
+    return lines
+
+
+def report_to_dict(report: PulseReport, *, limit: int) -> dict[str, Any]:
     return {
         "repository": report.repository,
         "generated_at": report.generated_at.isoformat(timespec="seconds"),
         "stale_days": report.stale_days,
         "metrics": report.metrics.__dict__,
+        "ai_summary": (
+            {
+                "provider": report.ai_provider or "",
+                "model": report.ai_model or "",
+                "text": report.ai_summary,
+            }
+            if report.ai_summary
+            else None
+        ),
+        "duplicate_candidates": [
+            _duplicate_candidate_to_dict(candidate) for candidate in report.duplicate_candidates[:limit]
+        ],
         "recommendations": report.recommendations,
         "queues": {
             name: [_item_to_dict(item, report.generated_at) for item in items[:limit]]
             for name, items in report.queues.items()
         },
+    }
+
+
+def _duplicate_candidate_to_dict(candidate: DuplicateCandidate) -> dict[str, Any]:
+    return {
+        "first": _item_summary(candidate.first),
+        "second": _item_summary(candidate.second),
+        "similarity": candidate.similarity,
+        "shared_terms": list(candidate.shared_terms),
+    }
+
+
+def _item_summary(item: WorkItem) -> dict[str, Any]:
+    return {
+        "number": item.number,
+        "title": item.title,
+        "html_url": item.html_url,
+        "labels": list(item.labels),
     }
 
 
@@ -303,6 +393,22 @@ def _html_item(item: dict[str, Any]) -> str:
   <p>{' · '.join(details)}</p>
   <div class="labels">{labels}</div>
 </article>"""
+
+
+def _html_duplicate(candidate: dict[str, Any]) -> str:
+    first = candidate["first"]
+    second = candidate["second"]
+    shared = ", ".join(candidate["shared_terms"]) or "-"
+    return f"""<article class="item">
+  <a href="{html.escape(first["html_url"])}">#{first["number"]} {html.escape(first["title"])}</a>
+  <p>Likely duplicate of <a href="{html.escape(second["html_url"])}">#{second["number"]} {html.escape(second["title"])}</a></p>
+  <p>Similarity: {candidate["similarity"]:.2f} - Shared terms: {html.escape(shared)}</p>
+</article>"""
+
+
+def _html_markdownish(value: str) -> str:
+    paragraphs = [paragraph.strip() for paragraph in value.split("\n\n") if paragraph.strip()]
+    return "".join(f"<p>{html.escape(paragraph)}</p>" for paragraph in paragraphs)
 
 
 def escape_markdown(value: str) -> str:

@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import replace
 import os
 import sys
 from pathlib import Path
 
 from . import __version__
+from .ai import DEFAULT_OPENAI_MODEL, generate_openai_summary
 from .analysis import analyze
 from .github import fetch_items, load_items
 from .report import render_csv, render_html, render_json, render_markdown
@@ -54,6 +56,27 @@ def build_parser() -> argparse.ArgumentParser:
         default="GITHUB_TOKEN",
         help="Environment variable containing a GitHub token for live fetches.",
     )
+    parser.add_argument(
+        "--ai-summary",
+        action="store_true",
+        help="Generate an optional OpenAI maintainer summary. Requires OPENAI_API_KEY by default.",
+    )
+    parser.add_argument(
+        "--openai-model",
+        default=os.environ.get("OPENAI_MODEL", DEFAULT_OPENAI_MODEL),
+        help=f"OpenAI model for --ai-summary. Defaults to {DEFAULT_OPENAI_MODEL}.",
+    )
+    parser.add_argument(
+        "--openai-api-key-env",
+        default="OPENAI_API_KEY",
+        help="Environment variable containing the OpenAI API key for --ai-summary.",
+    )
+    parser.add_argument(
+        "--openai-timeout",
+        type=int,
+        default=30,
+        help="OpenAI API timeout in seconds for --ai-summary.",
+    )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return parser
 
@@ -66,6 +89,8 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--stale-days must be at least 1")
     if args.max_pages < 1:
         parser.error("--max-pages must be at least 1")
+    if args.openai_timeout < 1:
+        parser.error("--openai-timeout must be at least 1")
     if args.input is None and not args.repository:
         parser.error("provide a repository or --input")
 
@@ -79,6 +104,20 @@ def main(argv: list[str] | None = None) -> int:
             repository = args.repository
 
         pulse = analyze(items, repository, stale_days=args.stale_days)
+        if args.ai_summary:
+            api_key = os.environ.get(args.openai_api_key_env)
+            summary = generate_openai_summary(
+                pulse,
+                api_key=api_key or "",
+                model=args.openai_model,
+                timeout=args.openai_timeout,
+            )
+            pulse = replace(
+                pulse,
+                ai_summary=summary,
+                ai_provider="openai",
+                ai_model=args.openai_model,
+            )
         rendered = _render(args.format, pulse)
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)

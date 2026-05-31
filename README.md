@@ -37,6 +37,8 @@ easier for new contributors to understand.
 
 - Release blocker, stuck pull request, stale item, first-response, and quick-win queues.
 - Milestone-aware release blocker grouping for release planning.
+- Deterministic duplicate issue candidate detection from issue titles.
+- Optional OpenAI maintainer summaries when explicitly enabled with an API key.
 - Markdown, HTML, JSON, and CSV output.
 - Reusable GitHub Action for scheduled reports.
 - No runtime dependencies.
@@ -101,6 +103,19 @@ Generate spreadsheet-friendly output:
 maintainer-pulse octo-org/octo-repo --format csv --output maintainer-pulse-report.csv
 ```
 
+Generate an optional AI maintainer summary with the OpenAI API:
+
+```bash
+export OPENAI_API_KEY=sk_your_key_here
+maintainer-pulse octo-org/octo-repo \
+  --ai-summary \
+  --openai-model gpt-5-mini \
+  --output maintainer-pulse-report.md
+```
+
+AI summaries are opt-in. Without `--ai-summary`, Maintainer Pulse does not call
+OpenAI or any other AI provider.
+
 See [examples/sample-report.md](examples/sample-report.md) for a generated report.
 See [examples/sample-report.csv](examples/sample-report.csv) for spreadsheet-friendly output.
 
@@ -146,6 +161,7 @@ See [docs/github-action.md](docs/github-action.md) for all inputs.
 ## Project Health
 
 - Project impact and maintainer plan: [PROJECT_IMPACT.md](PROJECT_IMPACT.md)
+- Optional AI summaries: [docs/ai-summary.md](docs/ai-summary.md)
 - Maintainer workflow examples: [docs/maintainer-workflows.md](docs/maintainer-workflows.md)
 - Roadmap: [docs/roadmap.md](docs/roadmap.md)
 - Support: [SUPPORT.md](SUPPORT.md)
@@ -165,6 +181,8 @@ Maintainer Pulse groups work into five queues:
 - `stale_items`: open items idle beyond the configured stale threshold.
 - `quick_wins`: small contributor-friendly issues labeled `good first issue`,
   `help wanted`, `documentation`, or `starter`.
+- `duplicate_candidates`: pairs of open issues with similar title terms. This is
+  deterministic and intended as a review hint, not an automatic close decision.
 
 CSV output includes one row per queued item with the queue name, item number,
 type, state, labels, author, comment count, idle days, age days, timestamps, and
